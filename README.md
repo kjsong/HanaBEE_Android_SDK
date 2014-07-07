@@ -27,5 +27,9 @@ hanabee@hanamicron.co.kr
 
 This document is available at: https://github.com/HanaBEE/HanaBEE_Android_SDK 
 
-**2014. 07. 04**
-**HANA Micron. Inc. All rights reserved.**
+
+License
+--------
+  Copyright 2014 HANA Micron. Inc. 
+  
+  **All rights reserved.**
