@@ -1,15 +1,13 @@
 HanaBEE_Android_SDK
 ===================
 
-
-
 **HanaBEE**
 ------------
 **Bluetooth Low Energy (BLE) Beacon SDK** 
 
 *SI Business Team*
 
-
+![](website/static/hanabee256.png)
 
 
 
