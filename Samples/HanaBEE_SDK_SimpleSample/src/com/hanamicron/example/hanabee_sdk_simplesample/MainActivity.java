@@ -17,11 +17,11 @@ public class MainActivity extends Activity {
 
 	private final String TAG = MainActivity.class.getSimpleName();
 
-	private HanaBEE myHanaBEESDK;
+	private HanaBEE mHanaBEE;
 	private ScrollView svResultHolder;
 	private TextView tvResultOut;
 	private StringBuffer sbResultData = new StringBuffer();
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,8 +37,8 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 
 		sbResultData.setLength(0);
-
-		myHanaBEESDK.startPositionScan(new HanaBEE.PositionScanCallback() {
+		
+		mHanaBEE.startPositionScan(new HanaBEE.PositionScanCallback() {
 			@Override
 			public void onPositionScan(PointDouble trackingResult) {
 
@@ -64,16 +64,16 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		myHanaBEESDK.startRangeScan(new HanaBEE.RangeScanCallback() {
+		mHanaBEE.startInfoScan(new HanaBEE.InfoScanCallback() {
 
 			@Override
-			public void onRangeScan(String macAddr, double range) {
+			public void onInfoScan(String macAddr, BeaconInfo beaconInfo) {
 
 				if (sbResultData.length() > 10000) {
 					sbResultData.setLength(0);
 				}
 
-				String out = String.format("MAC: %s. Range:%f\n", macAddr, range);
+				String out = String.format("MAC: %s. Range:%f\n", macAddr, beaconInfo.getRange());
 				// Log.d(TAG, out);
 				sbResultData.append(out);
 				runOnUiThread(new Runnable() {
@@ -96,14 +96,14 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onPause() {
-		myHanaBEESDK.stopPositionScan();
-		myHanaBEESDK.stopRangeScan();
+		mHanaBEE.stopPositionScan();
+		mHanaBEE.stopInfoScan();
 		super.onPause();
 	}
 
 	public void initBLE() {
 
-		myHanaBEESDK = HanaBEE.getInstance(this);
+		mHanaBEE = HanaBEE.getInstance(this);
 
 		ArrayList<BeaconInfo> positionNodeList = new ArrayList<BeaconInfo>();
 		positionNodeList.add(new BeaconInfo(0, 0, "90:59:AF:2A:AD:3F"));
@@ -111,15 +111,15 @@ public class MainActivity extends Activity {
 		positionNodeList.add(new BeaconInfo(8, 8, "90:59:AF:2A:C4:04"));
 		positionNodeList.add(new BeaconInfo(8, 0, "90:59:AF:2A:AD:4C"));
 
-		myHanaBEESDK.setPositionNodeInfo(positionNodeList);
+		mHanaBEE.setPositionNode(positionNodeList);
 
-		ArrayList<BeaconInfo> rangeNodeList = new ArrayList<BeaconInfo>();
-		rangeNodeList.add(new BeaconInfo(0, 0, "90:59:AF:2A:AD:3F"));
-		rangeNodeList.add(new BeaconInfo(0, 8, "90:59:AF:2A:94:68"));
+		ArrayList<BeaconInfo> infoNodeList = new ArrayList<BeaconInfo>();
+		infoNodeList.add(new BeaconInfo(0, 0, "90:59:AF:2A:AD:3F"));
+		infoNodeList.add(new BeaconInfo(0, 8, "90:59:AF:2A:94:68"));
 		// rangeNodeList.add(new BeaconInfo(8, 8, "90:59:AF:2A:C4:04"));
 		// rangeNodeList.add(new BeaconInfo(8, 0, "90:59:AF:2A:AD:4C"));
 
-		myHanaBEESDK.setRangeNodeInfo(rangeNodeList);
+		mHanaBEE.setInfoNode(infoNodeList);
 
 	}
 }
