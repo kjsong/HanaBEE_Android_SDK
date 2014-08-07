@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+Version 1.0.2 *(2014-08-07)*
+----------------------------
+* added force bluetooth on / manual bluetooth on.
 
 Version 1.0.1 *(2014-08-06)*
 ----------------------------
