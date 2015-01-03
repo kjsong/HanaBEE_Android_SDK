@@ -11,11 +11,12 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -38,6 +39,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	private final String TAG = MainActivity.class.getSimpleName();
 	public final int REQUEST_BLUETOOTH = 10000;
+
+	private final int DISPLAY_LENGTH = 5000;
 
 	private Hanabee mHanabee;
 
@@ -71,19 +74,20 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		// Position (Radar)
 		final ArrayList<BeaconInfo> positionNodeList = new ArrayList<BeaconInfo>();
-		positionNodeList.add(new BeaconInfo(0, 0, "E0:C7:9D:61:C8:F1"));
-		positionNodeList.add(new BeaconInfo(0, 8, "78:C5:E5:6C:0D:F7"));
-		positionNodeList.add(new BeaconInfo(8, 8, "E0:C7:9D:61:C3:28"));
-		positionNodeList.add(new BeaconInfo(8, 0, "90:59:AF:2A:95:90"));
+		positionNodeList.add(new BeaconInfo(0, 0, "E0:C7:9D:61:C3:28"));
+		positionNodeList.add(new BeaconInfo(0, 8, "D0:39:72:CD:CF:68"));
+		positionNodeList.add(new BeaconInfo(8, 8, "D0:39:72:CD:CF:79"));
+		positionNodeList.add(new BeaconInfo(8, 0, "D0:39:72:CD:CF:87"));
 		mHanabee.setPositionNodeList(positionNodeList);
 
 		// Proximity (State and Event)
 		ProximityList proximityList = new ProximityList();
-		proximityList.addProximityRegion("90:59:AF:2A:95:90", 10, 1);
-		proximityList.addProximityRegion("D0:39:72:CD:CE:49", 10, 1);
+		proximityList.addProximityRegion("E0:C7:9D:61:C3:28", 10, 1);
+
 		mHanabee.setProximityList(proximityList);
 
 		initUIBeaconPosition(positionNodeList);
+
 	}
 
 	private void initUI() {
@@ -115,7 +119,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		// Turn on bluetooth by user popup.
 		Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 		startActivityForResult(enableBtIntent, REQUEST_BLUETOOTH);
-		mHanabee = Hanabee.getInstance(this);
+		mHanabee = Hanabee.getInstance(getApplicationContext());
 
 		// or, force start bluetooth.
 		// mHanaBEE = HanaBEE.getInstance(this, true);
@@ -161,24 +165,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		public void onClick(View view) {
 
 			BeaconInfo b = (BeaconInfo) view.getTag();
-			Toast.makeText(MainActivity.this, b.macAddr + " " + b.couponNumber, Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, b.getMacAddress() + " " + b.couponNumber, Toast.LENGTH_SHORT).show();
 		}
 
 	};
-
-	@Override
-	protected void onResume() {
-		sbResultData.setLength(0);
-		sbResultDataEvent.setLength(0);
-		mHanabee.restartHanabee();
-		super.onResume();
-	}
-
-	@Override
-	protected void onStop() {
-		mHanabee.stopHanabee();
-		super.onStop();
-	}
 
 	@Override
 	public void onClick(View v) {
@@ -186,7 +176,15 @@ public class MainActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 
 		case R.id.btnStart:
-			startScan();
+
+			if (mHanabee.isRunning()) {
+				mHanabee.stopHanabee();
+				btnStart.setText("Start Hanabee");
+			} else {
+				startScan();
+				btnStart.setText("Stop Hanabee");
+			}
+
 			break;
 
 		case R.id.btnStateEvent:
@@ -281,11 +279,17 @@ public class MainActivity extends Activity implements OnClickListener {
 		if (mHanabee.isRunning()) {
 			Log.d(TAG, "Hanabee is already running!");
 		} else {
+
 			mHanabee.startHanabee(new HanabeeResultCallback() {
 
 				@Override
-				public void onProximity(String macAddress, int radius, ProximityEvent event, ProximityState state, double range, double rssi) {
+				public void onProximity(String macAddress, float radius, ProximityEvent event, ProximityState state, float range, double rssi) {
 					displayProximity(macAddress, radius, event, state, range, rssi);
+				}
+
+				@Override
+				public void onProximity(String uuid, int major, int minor, float radius, ProximityEvent event, ProximityState state, float range, double rssi, String macAddress) {
+					displayProximity(uuid, radius, event, state, range, rssi);
 				}
 
 				@Override
@@ -299,14 +303,15 @@ public class MainActivity extends Activity implements OnClickListener {
 				}
 
 				@Override
-				public void onHanabee(BeaconHanabee hanabee) {
-					Log.d(TAG, "Hanabee Beacon.  uuid8:" + hanabee.getUUID8() + "batt:" + hanabee.getBattery());
+				public void onHanabee(BeaconHanabee hanabee, int rssi) {
+					Log.d(TAG, "Hanabee Beacon.  uuid8:" + hanabee.getUUID08() + "batt:" + hanabee.getBattery());
 				}
 
 				@Override
-				public void oniBeacon(BeaconiBeacon iBeacon) {
-					Log.d(TAG, "iBeacon. uuid:" + iBeacon.getUUID());
+				public void oniBeacon(BeaconiBeacon iBeacon, int rssi) {
+					Log.d(TAG, "iBeacon. uuid:" + iBeacon.getUUID16());
 				}
+
 			});
 		}
 
@@ -316,8 +321,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	// Display data
 	// //////////////////////////////////////
 
-	public void displayProximity(final String id, final int radius, final ProximityEvent event, final ProximityState state, final double range, final double rssi) {
-		if (sbResultData.length() > 10000) {
+	public void displayProximity(final String id, final float radius, final ProximityEvent event, final ProximityState state, final float range, final double rssi) {
+		if (sbResultData.length() > DISPLAY_LENGTH) {
 			sbResultData.setLength(0);
 		}
 
@@ -328,25 +333,29 @@ public class MainActivity extends Activity implements OnClickListener {
 				// Display Event only, but state information is available also.
 
 				if (event == ProximityEvent.NO_EVENT) {
-					sbResultData.append("[Prox] ID: " + id + " E:" + event + ", S:" + state + ", rad:" + radius + ", R:" + new DecimalFormat("#####.##").format(range) + "\n");
+					sbResultData.append(id + " E:" + event + ", S:" + state + ", rad:" + radius + ", R:" + new DecimalFormat("#####.##").format(range) + "<br/>");
 				} else {
-					sbResultData.append("[Prox] ID: " + id + " E:" + event + ", S:" + state + ", rad:" + radius + ", R:" + new DecimalFormat("#####.##").format(range) + "\n");
-					sbResultDataEvent.append("[Prox] ID: " + id + " E:" + event + ", S:" + state + ", rad:" + radius + ", R:" + new DecimalFormat("#####.##").format(range) + "\n");
+					sbResultData.append(id + " E:" + event + ", S:" + state + ", rad:" + radius + ", R:" + new DecimalFormat("#####.##").format(range) + "<br/>");
+					sbResultDataEvent.append(id + " E:" + event + ", S:" + state + ", rad:" + radius + ", R:" + new DecimalFormat("#####.##").format(range) + "<br/>");
 				}
 
-				if (screenMode == 1) {
-					tvResultOut.setText(sbResultDataEvent.toString());
-				} else if (screenMode == 0) {
-					tvResultOut.setText(sbResultData.toString());
+				String outputStr = "";
+				if (screenMode == 0) {
+					outputStr = sbResultData.toString();
+
+				} else if (screenMode == 1) {
+					outputStr = sbResultDataEvent.toString();
 				}
 
+				outputStr = getColoredString(outputStr);
+				tvResultOut.setText(Html.fromHtml(outputStr), TextView.BufferType.SPANNABLE);
 				svResultHolder.fullScroll(View.FOCUS_DOWN);
 			}
 		});
 	}
 
 	public void displayPosition(String floorID, double x, double y) {
-		if (sbResultData.length() > 10000) {
+		if (sbResultData.length() > DISPLAY_LENGTH) {
 			sbResultData.setLength(0);
 		}
 
@@ -361,7 +370,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	public void displayError(ErrorCode error, String detailedReason) {
-		if (sbResultData.length() > 10000) {
+		if (sbResultData.length() > DISPLAY_LENGTH) {
 			sbResultData.setLength(0);
 		}
 
@@ -375,4 +384,21 @@ public class MainActivity extends Activity implements OnClickListener {
 		});
 	}
 
+	final String[] patterns = {//
+	"APPROACH",//
+			"APPEAR",//
+			"ENTER",//
+			"EXPIRED",//
+			"LEAVE",//
+			"STAYIN",//
+			"STAYOUT",//
+			"VANISHED",//
+	};
+
+	public String getColoredString(String outputStr) {
+		for (String p : patterns) {
+			outputStr = outputStr.replace(p, "<font color='red'>" + p + "</font>");
+		}
+		return outputStr;
+	}
 }
