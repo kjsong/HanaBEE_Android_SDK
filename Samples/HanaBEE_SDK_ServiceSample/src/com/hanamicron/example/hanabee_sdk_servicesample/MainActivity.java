@@ -121,7 +121,28 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	private void handleMessageMainActivity(Message msg) {
 		switch (msg.what) {
+		case BackgroundService.BACKGROUND_SERVICE_MSG_RESULT:
 
+			String macAddress = "";
+			String uuid = "";
+			int major = 0;
+			int minor = 0;
+			int rssi = 0;
+
+			Bundle b = msg.getData();
+			if (b != null) {
+				macAddress = b.getString(BackgroundService.MSG_MAC_ADDRESS);
+				uuid = b.getString(BackgroundService.MSG_UUID);
+				major = b.getInt(BackgroundService.MSG_MAJOR);
+				minor = b.getInt(BackgroundService.MSG_MINOR);
+				rssi = b.getInt(BackgroundService.MSG_RSSI);
+
+			}
+
+			String logdata = String.format("[Result] mac: %s, uuid: %s, major: %d, minor: %d, rssi: %d", macAddress, uuid, major, minor, rssi);
+			Log.d("TAG", logdata);
+
+			break;
 		}
 	}
 

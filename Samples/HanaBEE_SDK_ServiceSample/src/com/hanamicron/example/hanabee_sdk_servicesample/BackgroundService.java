@@ -125,7 +125,7 @@ public class BackgroundService extends Service {
 		// static final String MSG_RSSI = "MSG_RSSI";
 
 		b.putString(MSG_MAC_ADDRESS, device.getMacAddress());
-		b.putString(MSG_MAC_ADDRESS, device.getUUID());
+		b.putString(MSG_UUID, device.getUUID());
 		b.putInt(MSG_MAJOR, device.getMajor());
 		b.putInt(MSG_MINOR, device.getMinor());
 		b.putInt(MSG_RSSI, rssi);
