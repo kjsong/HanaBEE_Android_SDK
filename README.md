@@ -1,13 +1,13 @@
 HanaBEE_Android_SDK
 ===================
 
-**HanaBEE**
+**hana**bee
 ------------
 **Bluetooth Low Energy (BLE) Beacon SDK** 
 
-*SI Business Team*
+*IoT Biz Team*
 
-![](website/static/hanabee256.png)
+![](website/static/hanabeeBeacon.png)
 
 
 
@@ -30,6 +30,6 @@ This document is available at: https://github.com/HanaBEE/HanaBEE_Android_SDK
 
 License
 --------
-  Copyright 2014 HANA Micron. Inc. 
+  Copyright 2015 HANA Micron. Inc. 
   
   **All rights reserved.**

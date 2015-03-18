@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:id="@+id/svCommands"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/rlButtonList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" >
+
+            <Space
+                android:id="@+id/spaceTop"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <Button
+                android:id="@+id/btnStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spaceTop"
+                android:fontFamily="sans-serif-thin"
+                android:text="Hanabee Backgound Scan Start"
+                android:textAlignment="center"
+                android:textSize="16dp" />
+
+            <Space
+                android:id="@+id/spaceMiddle"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/btnStart" />
+
+            <Button
+                android:id="@+id/btnStop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spaceMiddle"
+                android:fontFamily="sans-serif-thin"
+                android:text="Hanabee Backgound Scan Stop"
+                android:textAlignment="center"
+                android:textSize="16dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

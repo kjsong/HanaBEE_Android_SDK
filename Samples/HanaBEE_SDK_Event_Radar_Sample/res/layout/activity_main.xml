@@ -1,0 +1,137 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${packageName}.${activityClass}" >
+
+    <ScrollView
+        android:id="@+id/svCommands"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/rlButtonList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp" >
+
+            <Button
+                android:id="@+id/btnStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hanabee Start"
+                android:textAlignment="center"
+                android:textSize="14dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/rlScreenModeButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/svCommands" >
+
+        <Button
+            android:id="@+id/btnStateEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="34.67dp"
+            android:layout_marginLeft="14.67dp"
+            android:layout_marginRight="2dp"
+            android:text="State / Event"
+            android:textColor="#000000"
+            android:textSize="14dp" />
+
+        <Button
+            android:id="@+id/btnEventOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="34.67dp"
+            android:layout_marginRight="2dp"
+            android:layout_toRightOf="@id/btnStateEvent"
+            android:text="Event Only"
+            android:textColor="#000000"
+            android:textSize="14dp" />
+
+        <Button
+            android:id="@+id/btnRadar"
+            android:layout_width="wrap_content"
+            android:layout_height="34.67dp"
+            android:layout_toRightOf="@id/btnEventOnly"
+            android:text="Radar"
+            android:textColor="#000000"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rlIDButtons"
+        android:layout_below="@id/rlScreenModeButtons" >
+
+        <RelativeLayout
+            android:id="@+id/rlRadarHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/ivRadarBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"
+                android:src="@drawable/radar_background" />
+
+            <RelativeLayout
+                android:id="@+id/rlRadarMapUser"
+                android:layout_width="86dp"
+                android:layout_height="86dp"
+                android:layout_centerInParent="true" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/radar_map_user" />
+
+                <com.externalSource.kou.effectViews.MorphingImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/radar_map_user_effect" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlBeaconHolder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/ivRadarBackground"
+                android:layout_alignLeft="@id/ivRadarBackground"
+                android:layout_alignRight="@id/ivRadarBackground"
+                android:layout_alignTop="@id/ivRadarBackground" >
+
+                <com.externalSource.kou.AutoRotatingImageView.OneTimeRotatingImageView
+                    android:id="@+id/oIv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/radar_rotate_bar" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/svResultHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="3.67dp" >
+
+            <TextView
+                android:id="@+id/tvResultOut"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textColor="#EFEFEF"
+                android:textSize="10dp" />
+        </ScrollView>
+    </RelativeLayout>
+
+</RelativeLayout>
