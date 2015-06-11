@@ -1,12 +1,16 @@
 Change Log
 ==========
 
-Version 1.0.6 *(2014-01-12)*
+Version 1.0.7 *(2015-06-11)*
+----------------------------
+* separate indoor sdk
+
+Version 1.0.6 *(2015-01-12)*
 ----------------------------
 * bugfix: fixed interval cannot be set more than 1000000(msec).
 * added more sample project. (SimpleSample, ServiceSample)
 
-Version 1.0.5 *(2014-01-12)*
+Version 1.0.5 *(2015-01-12)*
 ----------------------------
 * changed class name from HanaBEE to Hanabee.
 
