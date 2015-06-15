@@ -36,9 +36,8 @@ HanaBEE_Android_SDK
 
 ### SDK 최소사양:
 
-* Android 4.3 또는 이후 버전 OS (Bluetooth le 지원)
-	
-* BLE를 지원하는 Android device(일부 기기는 OS가 Android 4.3 이상이지만 하드웨어에서 지원하지 못하는 경우가 있을 수 있습니다
+- Android 4.3 또는 이후 버전 OS (Bluetooth le 지원)
+- BLE를 지원하는 Android device(일부 기기는 OS가 Android 4.3 이상이지만 하드웨어에서 지원하지 못하는 경우가 있을 수 있습니다
 
 
 hanabee 비콘에 대한 설명은 아래 사이트에서 확인하실 수 있습니다.
