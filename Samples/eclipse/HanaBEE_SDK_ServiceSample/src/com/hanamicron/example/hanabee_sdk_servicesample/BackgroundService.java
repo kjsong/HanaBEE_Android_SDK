@@ -1,4 +1,4 @@
-package com.hanamicron.example.hanabee_sdk_servicesample;
+package com.hanamicron.example.hanabee_indoor_sdk_servicesample;
 
 import android.app.Service;
 import android.content.Intent;
@@ -169,6 +169,10 @@ public class BackgroundService extends Service {
 				}
 
 				@Override
+				public void onPosition(String floorID, double x, double y) {
+				}
+
+				@Override
 				public void onError(ErrorCode error, String detailedReason) {
 				}
 
@@ -182,6 +186,8 @@ public class BackgroundService extends Service {
 				@Override
 				public void oniBeacon(final BeaconiBeacon iBeacon, int rssi) {
 					Log.d(TAG, "iBeacon. uuid:" + iBeacon.getUUID16());
+
+					sendResult(iBeacon, rssi);
 				}
 
 			});
