@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.0.8 *(2015-09-11)*
+----------------------------
+* update trial version time limit: 2015/12/31
+
 Version 1.0.7 *(2015-06-11)*
 ----------------------------
 * separate indoor sdk
